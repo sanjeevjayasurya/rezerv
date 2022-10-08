@@ -1,9 +1,8 @@
+import { ethers } from "ethers";
 import { useState } from "react";
 
-export default function Form({onSubmit}) {
-  const [formState, setFormState] = useState([
-    { address: "", amount: "" },
-  ]);
+export default function Form({ onSubmit }) {
+  const [formState, setFormState] = useState([{ address: "", amount: "" }]);
 
   const handleChange = (event, index) => {
     let formStateCopy = [...formState];
@@ -22,6 +21,20 @@ export default function Form({onSubmit}) {
     setFormState(formStateCopy);
   };
 
+  const getTotalAmount = () => {
+    return formState.reduce(
+      (total, ethValue) => total + parseFloat(ethValue.amount),
+      0
+    );
+  };
+
+  const getValues = () => {
+    return formState.map((data) => ethers.utils.parseUnits(data.amount, 18));
+  };
+  const getAddresses = () => {
+    return formState.map((data) => data.address);
+  };
+
   return (
     <>
       <div>This is form</div>
@@ -30,7 +43,7 @@ export default function Form({onSubmit}) {
           id="address-form"
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit()
+            onSubmit(getAddresses(),getValues(),getTotalAmount())
           }}
         >
           {formState.map((state, index) => (

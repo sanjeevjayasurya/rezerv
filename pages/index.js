@@ -7,12 +7,11 @@ import {
   useSigner,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import Form from "../components/Form";
+import Form from "../components/form";
 import disperseContractABI from "../abi/disperseContractABI.json";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 
 export default function Home() {
-
   const {
     data: signer,
     isError: isSignerError,
@@ -44,21 +43,12 @@ export default function Home() {
   const { data, isError, isLoading } = useBalance({
     addressOrName: address,
   });
-  const total = 0.01
-  function disperseEth() {
-    contract.disperseEther(
-      ["0x4aD946FFb7C197c670A46CBE93fE98176A3A4375"],
-      [ethers.utils.parseUnits('0.01', 18)], 
-      {
-        gasLimit: '5000000',
-        value: ethers.utils.parseEther(total.toString())
-      }
-    );
-  }
 
-  const onSubmit = () => {
-    console.log("Rezerv initiated");
-    disperseEth();
+  const onSubmit = (addresses, amounts, totalAmount) => {
+    contract.disperseEther(addresses, amounts, {
+      gasLimit: "5000000",
+      value: ethers.utils.parseEther(totalAmount.toString()),
+    });
   };
 
   if (isConnected)

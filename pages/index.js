@@ -44,11 +44,13 @@ export default function Home() {
     addressOrName: address,
   });
 
-  const onSubmit = (addresses, amounts, totalAmount) => {
-    contract.disperseEther(addresses, amounts, {
-      gasLimit: "5000000",
-      value: ethers.utils.parseEther(totalAmount.toString()),
-    });
+  const onSubmit = (data) => {
+    console.log('This is data')
+    console.log(data)
+    // contract.disperseEther(addresses, amounts, {
+    //   gasLimit: "5000000",
+    //   value: ethers.utils.parseEther(totalAmount.toString()),
+    // });
   };
 
   if (isConnected)

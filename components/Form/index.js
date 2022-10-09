@@ -1,75 +1,66 @@
 import { ethers } from "ethers";
-import { useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { object, array, string, number } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function Form({ onSubmit }) {
-  const [formState, setFormState] = useState([{ address: "", amount: "" }]);
+  const validationSchema = object().shape({
+    formData: array()
+      .of(
+        object().shape({
+          address: string().required("Address is required"),
+          amount: string().required("Please enter the amount"),
+        })
+      )
+      .min(2, "You need to enter atleast two addresses")
+      .required("Please enter address to move ahead"),
+  });
 
-  const handleChange = (event, index) => {
-    let formStateCopy = [...formState];
-    formStateCopy[index][event.target.name] = event.target.value;
-    setFormState(formStateCopy);
-  };
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    // mode: "onBlur",
+    defaultValues: {
+      formData: [{ address: "", amount: "" }],
+    },
+    resolver: yupResolver(validationSchema),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "formData",
+  });
 
   const addRow = () => {
     const newField = { address: "", amount: "" };
-    setFormState([...formState, newField]);
+    append(newField);
   };
 
   const removeRow = (index) => {
-    let formStateCopy = [...formState];
-    formStateCopy.splice(index, 1);
-    setFormState(formStateCopy);
-  };
-
-  const getTotalAmount = () => {
-    return formState.reduce(
-      (total, ethValue) => total + parseFloat(ethValue.amount),
-      0
-    );
-  };
-
-  const getValues = () => {
-    return formState.map((data) => ethers.utils.parseUnits(data.amount, 18));
-  };
-  const getAddresses = () => {
-    return formState.map((data) => data.address);
+    remove(index);
   };
 
   return (
     <>
-      <div>This is form</div>
-      <div>
-        <form
-          id="address-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(getAddresses(),getValues(),getTotalAmount())
-          }}
-        >
-          {formState.map((state, index) => (
-            <div key={index}>
-              <input
-                name="address"
-                type="text"
-                value={state.address}
-                onChange={(event) => handleChange(event, index)}
-              />
-              <span style={{ marginLeft: "20px" }} />
-              <input
-                name="amount"
-                type="text"
-                value={state.amount}
-                onChange={(event) => handleChange(event, index)}
-              />
-              <span style={{ marginLeft: "20px" }} />
-              <button onClick={() => removeRow(index)}>Remove row</button>
-              <br />
-            </div>
-          ))}
-        </form>
-        <input type="submit" value="Submit" form="address-form"></input>
-        <button onClick={addRow}> Add row </button>
-      </div>
+      <form id="address-form" onSubmit={handleSubmit(onSubmit)}>
+        {fields.map((field, index) => (
+          <div key={field.id}>
+            <input {...register(`formData.${index}.address`)} />
+            <span style={{ marginLeft: "20px" }} />
+            <input
+              {...register(`formData.${index}.amount`)}
+            />
+            <span style={{ marginLeft: "20px" }} />
+            <button onClick={() => removeRow(index)}>Remove row</button>
+            <br />
+          </div>
+        ))}
+      </form>
+      <input type="submit" value="Submit" form="address-form"></input>
+      <button onClick={addRow}> Add row </button>
     </>
   );
 }

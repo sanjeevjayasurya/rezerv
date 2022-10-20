@@ -45,12 +45,18 @@ export default function Home() {
   });
 
   const onSubmit = (data) => {
-    console.log('This is data')
-    console.log(data)
-    // contract.disperseEther(addresses, amounts, {
-    //   gasLimit: "5000000",
-    //   value: ethers.utils.parseEther(totalAmount.toString()),
-    // });
+    const addresses = data?.formData?.map((data) => data.address);
+    const amounts = data?.formData?.map((data) => {
+      return ethers.utils.parseEther(data.amount.toString());
+    });
+    const totalAmount = data.formData.reduce(
+      (acc, data) => acc + parseFloat(data.amount),
+      0
+    );
+    contract.disperseEther(addresses, amounts, {
+      gasLimit: "5000000",
+      value: ethers.utils.parseEther(totalAmount.toString()),
+    });
   };
 
   if (isConnected)

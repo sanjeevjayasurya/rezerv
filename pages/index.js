@@ -10,6 +10,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import Form from "../components/form";
 import disperseContractABI from "../abi/disperseContractABI.json";
 import { ethers } from "ethers";
+import { useEffect } from "react";
 
 export default function Home() {
   const {
@@ -38,11 +39,43 @@ export default function Home() {
     connector: new InjectedConnector(),
   });
 
+  async function connectWallet() {
+    try {
+      await connect();
+      localStorage.setItem("isWalletConnected", true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function disconnectWallet() {
+    try {
+      await disconnect();
+      localStorage.setItem("isWalletConnected", false);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
   const { disconnect } = useDisconnect();
 
   const { data, isError, isLoading } = useBalance({
     addressOrName: address,
   });
+
+  useEffect(() => {
+    const connectWalletOnPageLoad = async () => {
+      if (localStorage?.getItem("isWalletConnected") === "true") {
+        console.log("true");
+        try {
+          await connect();
+        } catch (ex) {
+          console.log(ex);
+        }
+      }
+    };
+    connectWalletOnPageLoad();
+  }, []);
 
   const onSubmit = (data) => {
     const addresses = data?.formData?.map((data) => data.address);
@@ -64,7 +97,12 @@ export default function Home() {
       <>
         <div>
           Connected to {address}
-          <button onClick={() => disconnect()}>Disconnect</button>
+          <button
+            class="font-bold border-[1px]"
+            onClick={() => disconnectWallet()}
+          >
+            Disconnect
+          </button>
         </div>
         <br />
         <br />
@@ -85,5 +123,5 @@ export default function Home() {
       </>
     );
   else if (isConnecting) return <div>Wallet is connecting..</div>;
-  return <button onClick={() => connect()}>Connect Wallet</button>;
+  return <button onClick={() => connectWallet()}>Connect Wallet</button>;
 }

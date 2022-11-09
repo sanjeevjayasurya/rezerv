@@ -12,6 +12,7 @@ import disperseContractABI from "../abi/disperseContractABI.json";
 import { ethers } from "ethers";
 import { useEffect } from "react";
 import { Header } from "../components/Header";
+import { Hero } from "../components/Hero";
 
 export default function Home() {
   const {
@@ -97,6 +98,7 @@ export default function Home() {
     return (
       <>
         <Header />
+        <Hero />
         <div>
           Connected to {address}
           <button

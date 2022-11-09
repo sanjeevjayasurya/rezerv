@@ -11,6 +11,7 @@ import Form from "../components/form";
 import disperseContractABI from "../abi/disperseContractABI.json";
 import { ethers } from "ethers";
 import { useEffect } from "react";
+import { Header } from "../components/Header";
 
 export default function Home() {
   const {
@@ -95,6 +96,7 @@ export default function Home() {
   if (isConnected)
     return (
       <>
+        <Header />
         <div>
           Connected to {address}
           <button

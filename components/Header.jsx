@@ -99,7 +99,7 @@ export function Header() {
               <Logo className="h-10 w-auto" />
             </Link>
           </div>
-          <div className="flex items-center gap-x-5 md:gap-x-8">
+          {/* <div className="flex items-center gap-x-5 md:gap-x-8">
             <Button href="/register" className="bg-[#fce303] text-black">
               <span>
                 Connect <span className="hidden lg:inline">wallet</span>
@@ -108,7 +108,7 @@ export function Header() {
             <div className="-mr-1 md:hidden">
               <MobileNavigation />
             </div>
-          </div>
+          </div> */}
         </nav>
       </Container>
     </header>

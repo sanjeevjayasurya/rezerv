@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 import { useEffect } from "react";
 import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
+import Balance from "../components/Balance";
 
 export default function Home() {
   const {
@@ -99,7 +100,8 @@ export default function Home() {
       <>
         <Header />
         <Hero />
-        <div>
+        <Balance />
+        <div class="bg-white">
           Connected to {address}
           <button
             class="font-bold border-[1px]"

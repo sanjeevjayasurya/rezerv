@@ -95,16 +95,15 @@ export default function Home() {
     });
   };
 
-  if (isConnected)
+  // if (isConnected)
     return (
       <>
-        <Header />
         <Hero />
         <Balance />
-        <div class="bg-white">
+        <div className="bg-white">
           Connected to {address}
           <button
-            class="font-bold border-[1px]"
+            className="font-bold border-[1px]"
             onClick={() => disconnectWallet()}
           >
             Disconnect
@@ -128,6 +127,6 @@ export default function Home() {
         <Form onSubmit={onSubmit} />
       </>
     );
-  else if (isConnecting) return <div>Wallet is connecting..</div>;
-  return <button onClick={() => connectWallet()}>Connect Wallet</button>;
+  // else if (isConnecting) return <div>Wallet is connecting..</div>;
+  // return <button onClick={() => connectWallet()}>Connect Wallet</button>;
 }

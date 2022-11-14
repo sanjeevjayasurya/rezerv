@@ -1,9 +1,53 @@
 import { Container } from "./Container";
 import { Press_Start_2P } from "@next/font/google";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { useConnect, useDisconnect } from "wagmi";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const myFont = Press_Start_2P({ subsets: "latin", weight: "400" });
 
 export function Hero() {
+  const router = useRouter()
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+
+  async function connectWallet() {
+    try {
+      await connect();
+      localStorage.setItem("isWalletConnected", true);
+      router.push('/disperse')
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function disconnectWallet() {
+    try {
+      await disconnect();
+      localStorage.setItem("isWalletConnected", false);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
+  useEffect(() => {
+    const connectWalletOnPageLoad = async () => {
+      if (localStorage?.getItem("isWalletConnected") === "true") {
+        try {
+          await connect();
+          router.push('/disperse')
+        } catch (ex) {
+          console.log(ex);
+        }
+      }
+    };
+    connectWalletOnPageLoad();
+  }, []);
+
+  const { disconnect } = useDisconnect();
+
   return (
     <Container className="pt-20 pb-16 text-center lg:pt-32">
       <h1
@@ -15,7 +59,7 @@ export function Hero() {
         Distribute assets with less gas fees
       </p>
       <div className={`${myFont.className} mt-10 flex justify-center gap-x-6`}>
-        <button className="text-white p-4 bg-slate-500" href="/register">
+        <button onClick={connectWallet} className="text-white p-4 bg-slate-500" href="/register">
           Connect Wallet
         </button>
       </div>

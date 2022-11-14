@@ -1,19 +1,22 @@
-import { Fragment } from 'react'
-import Link from 'next/link'
-import { Popover, Transition } from '@headlessui/react'
-import clsx from 'clsx'
+import { Fragment } from "react";
+import Link from "next/link";
+import { Popover, Transition } from "@headlessui/react";
+import clsx from "clsx";
 
-import { Button } from './Button'
-import { Container } from './Container'
-import { Logo } from './Logo'
-import { NavLink } from './NavLink'
+import { Button } from "./Button";
+import { Container } from "./Container";
+import { Logo } from "./Logo";
+import { NavLink } from "./NavLink";
+import { Press_Start_2P } from "@next/font/google";
+import { useAccount, useDisconnect } from "wagmi";
+import { useRouter } from "next/router";
 
 function MobileNavLink({ href, children }) {
   return (
     <Popover.Button as={Link} href={href} className="block w-full p-2">
       {children}
     </Popover.Button>
-  )
+  );
 }
 
 function MobileNavIcon({ open }) {
@@ -28,19 +31,19 @@ function MobileNavIcon({ open }) {
       <path
         d="M0 1H14M0 7H14M0 13H14"
         className={clsx(
-          'origin-center transition',
-          open && 'scale-90 opacity-0'
+          "origin-center transition",
+          open && "scale-90 opacity-0"
         )}
       />
       <path
         d="M2 2L12 12M12 2L2 12"
         className={clsx(
-          'origin-center transition',
-          !open && 'scale-90 opacity-0'
+          "origin-center transition",
+          !open && "scale-90 opacity-0"
         )}
       />
     </svg>
-  )
+  );
 }
 
 function MobileNavigation() {
@@ -86,19 +89,47 @@ function MobileNavigation() {
         </Transition.Child>
       </Transition.Root>
     </Popover>
-  )
+  );
 }
 
+const myFont = Press_Start_2P({ subsets: "latin", weight: "400" });
+
 export function Header() {
+  const router = useRouter();
+  const { disconnect } = useDisconnect();
+  const { isConnected } = useAccount();
+  
+  async function disconnectWallet() {
+    try {
+      await disconnect();
+      localStorage.setItem("isWalletConnected", false);
+      router.push("/");
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
   return (
     <header className="py-10 bg-black">
       <Container>
         <nav className="relative z-50 flex justify-between">
-          <div className="flex items-center md:gap-x-12">
-            <Link href="#" aria-label="Home">
-              <Logo className="h-10 w-auto" />
-            </Link>
-          </div>
+          {/* <div className="flex items-center justify-between md:gap-x-12"> */}
+          <Link href="#" aria-label="Home">
+            <Logo className="h-10 w-auto" />
+          </Link>
+          {isConnected && (
+            <div
+              className={`${myFont.className} flex justify-center gap-x-6 text-sm`}
+            >
+              <button
+                onClick={disconnectWallet}
+                className="text-white p-4 bg-slate-500"
+              >
+                Disconnect
+              </button>
+              {/* </div> */}
+            </div>
+          )}
           {/* <div className="flex items-center gap-x-5 md:gap-x-8">
             <Button href="/register" className="bg-[#fce303] text-black">
               <span>
@@ -112,5 +143,5 @@ export function Header() {
         </nav>
       </Container>
     </header>
-  )
+  );
 }

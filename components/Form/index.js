@@ -44,23 +44,29 @@ export default function Form({ onSubmit }) {
   };
 
   return (
-    <>
-      <form id="address-form" onSubmit={handleSubmit(onSubmit)}>
+    <div class="w-full mx-auto flex flex-col mt-10">
+      <form class="mx-auto" id="address-form" onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <div key={field.id}>
-            <input {...register(`formData.${index}.address`)} />
+          <div class="reltaive" key={field.id}>
+            <input
+              class="h-10 p-4 border-[2px] w-72 border-black bg-slate-700 focus:border-yellow focus:bg-slate-600 outline-none"
+              placeholder={`Recipient ${index + 1}`}
+              {...register(`formData.${index}.address`)}
+            />
             <span style={{ marginLeft: "20px" }} />
             <input
+              class="h-10 p-4 border-[2px] w-72 border-black bg-slate-700 focus:border-yellow focus:bg-slate-600 outline-none"
+              placeholder="Amount"
               {...register(`formData.${index}.amount`)}
             />
             <span style={{ marginLeft: "20px" }} />
-            <button onClick={() => removeRow(index)}>Remove row</button>
+            <button class="text-yellow text-4xl" onClick={() => removeRow(index)}>-</button>
             <br />
           </div>
         ))}
       </form>
       <input type="submit" value="Submit" form="address-form"></input>
-      <button onClick={addRow}> Add row </button>
-    </>
+      <button class="text-yellow" onClick={addRow}> Add recipient </button>
+    </div>
   );
 }

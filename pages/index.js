@@ -1,32 +1,17 @@
 import {
-  useContract,
   useAccount,
   useBalance,
   useConnect,
   useDisconnect,
-  useSigner,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import Form from "../components/form";
-import disperseContractABI from "../abi/disperseContractABI.json";
-import { ethers } from "ethers";
 import { useEffect } from "react";
-import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
 import Balance from "../components/Balance";
 
 export default function Home() {
-  const {
-    data: signer,
-    isError: isSignerError,
-    isLoading: isSignerLoading,
-  } = useSigner();
 
-  const contract = useContract({
-    addressOrName: "0x9CC3Bc6cC9D22679EAd7b37716432881991C6B62",
-    contractInterface: disperseContractABI,
-    signerOrProvider: signer,
-  });
 
   const { address, isConnected, isConnecting, isDisconnected, status } =
     useAccount({
@@ -80,20 +65,7 @@ export default function Home() {
     connectWalletOnPageLoad();
   }, []);
 
-  const onSubmit = (data) => {
-    const addresses = data?.formData?.map((data) => data.address);
-    const amounts = data?.formData?.map((data) => {
-      return ethers.utils.parseEther(data.amount.toString());
-    });
-    const totalAmount = data.formData.reduce(
-      (acc, data) => acc + parseFloat(data.amount),
-      0
-    );
-    contract.disperseEther(addresses, amounts, {
-      gasLimit: "5000000",
-      value: ethers.utils.parseEther(totalAmount.toString()),
-    });
-  };
+  
 
   // if (isConnected)
     return (

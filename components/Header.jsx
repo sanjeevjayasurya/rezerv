@@ -7,7 +7,6 @@ import { Button } from "./Button";
 import { Container } from "./Container";
 import { Logo } from "./Logo";
 import { NavLink } from "./NavLink";
-import { Press_Start_2P } from "@next/font/google";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
 
@@ -92,7 +91,6 @@ function MobileNavigation() {
   );
 }
 
-const myFont = Press_Start_2P({ subsets: "latin", weight: "400" });
 
 export function Header() {
   const router = useRouter();
@@ -119,11 +117,11 @@ export function Header() {
           </Link>
           {isConnected && (
             <div
-              className={`${myFont.className} flex justify-center gap-x-6 text-sm`}
+              className={`flex justify-center gap-x-6 text-sm`}
             >
               <button
                 onClick={disconnectWallet}
-                className="text-white p-4 bg-slate-500"
+                className="nes-btn"
               >
                 Disconnect
               </button>

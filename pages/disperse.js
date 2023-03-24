@@ -4,8 +4,8 @@ import { Container } from "../components/Container";
 import Form from "../components/form";
 import disperseContractABI from "../abi/disperseContractABI.json";
 
-export default function Disperse() {
 
+export default function Disperse() {
   const {
     data: signer,
     isError: isSignerError,
@@ -47,11 +47,15 @@ export default function Disperse() {
   });
   return (
     <Container>
-      <div className="text-white text-center text-4xl">
-        Connected to {address}
+      <div className={`text-center text-xl`}>
+        <span className="text-[#fce303]">Connected to</span>{" "}
+        <span className="text-slate-400">{address}</span>
       </div>
-      <div className="text-white text-center text-4xl">
-        Balance: {data?.formatted} {data?.symbol}
+      <div className={`text-center text-xl mt-4`}>
+        <span className="text-[#fce303]">Balance:</span>{" "}
+        <span className="text-slate-400">
+          {data?.formatted} {data?.symbol}
+        </span>
       </div>
       <Form onSubmit={onSubmit} />
     </Container>

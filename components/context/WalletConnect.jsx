@@ -22,7 +22,7 @@ const WalletConnectContextProvider = (props) => {
     connectWalletOnPageLoad();
   }, []);
   return (
-    <WalletConnectContext.Provider>
+    <WalletConnectContext.Provider value={{}}>
       {props.children}
     </WalletConnectContext.Provider>
   );

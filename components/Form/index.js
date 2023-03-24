@@ -3,6 +3,11 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { object, array, string, number } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+const isObjectEmpty = (objectName) => {
+  console.log(objectName);
+  return JSON.stringify(objectName) === "{}";
+};
+
 export default function Form({ onSubmit }) {
   const validationSchema = object().shape({
     formData: array()
@@ -43,30 +48,68 @@ export default function Form({ onSubmit }) {
     remove(index);
   };
 
+  const showModal = () => {
+    console.log("showModal");
+  };
+
   return (
     <div className="w-full mx-auto flex flex-col mt-10">
-      <form className="mx-auto" id="address-form" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="mx-auto"
+        id="address-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {fields.map((field, index) => (
-          <div className="relative" key={field.id}>
-            <input
-              className="h-10 p-4 border-[2px] w-72 border-black bg-slate-700 focus:border-yellow focus:bg-slate-600 outline-none"
-              placeholder={`Recipient ${index + 1}`}
-              {...register(`formData.${index}.address`)}
-            />
+          <div className="relative flex" key={field.id}>
+            <div style={{ padding: "1rem" }} class="nes-field is-inline">
+              <input
+                type="text"
+                id="dark_field"
+                class="nes-input is-dark"
+                placeholder={`Recipient ${index + 1}`}
+                {...register(`formData.${index}.address`)}
+              />
+            </div>
+            <div style={{ padding: "1rem" }} class="nes-field is-inline">
+              <input
+                type="text"
+                id="dark_field"
+                class="nes-input is-dark"
+                placeholder="Amount"
+                {...register(`formData.${index}.amount`)}
+              />
+            </div>
             <span style={{ marginLeft: "20px" }} />
-            <input
-              className="h-10 p-4 border-[2px] w-72 border-black bg-slate-700 focus:border-yellow focus:bg-slate-600 outline-none"
-              placeholder="Amount"
-              {...register(`formData.${index}.amount`)}
-            />
-            <span style={{ marginLeft: "20px" }} />
-            <button className="text-yellow text-4xl" onClick={() => removeRow(index)}>-</button>
+            <button
+              className="text-yellow text-4xl"
+              onClick={() => removeRow(index)}
+            >
+              -
+            </button>
             <br />
           </div>
         ))}
       </form>
-      <input className="text-yellow" type="submit" value="Submit" form="address-form"></input>
-      <button className="text-yellow" onClick={addRow}> Add recipient </button>
+      {/* <input
+        className={`nes-btn ${
+          isObjectEmpty(errors) ? "is-disabled" : "is-success"
+        }`}
+        type="submit"
+        value="Submit"
+        disabled={isObjectEmpty(errors)}
+        form="address-form"
+      ></input> */}
+      <div className="flex mx-auto mt-10">
+        <input
+          type="submit"
+          value="Review"
+          form="address-form"
+          className="nes-btn mr-4"
+        ></input>
+        <button className="nes-btn ml-4" onClick={addRow}>
+          Add recipient
+        </button>
+      </div>
     </div>
   );
 }

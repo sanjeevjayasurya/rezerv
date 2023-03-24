@@ -51,6 +51,8 @@ export default function Home() {
     addressOrName: address,
   });
 
+  const onSubmit = () => console.log('Submitting')
+
   useEffect(() => {
     const connectWalletOnPageLoad = async () => {
       if (localStorage?.getItem("isWalletConnected") === "true") {
@@ -65,14 +67,12 @@ export default function Home() {
     connectWalletOnPageLoad();
   }, []);
 
-  
-
   // if (isConnected)
     return (
       <>
         <Hero />
-        <Balance />
-        <div className="bg-white">
+        {/* <Balance /> */}
+        {/* <div className="bg-white">
           Connected to {address}
           <button
             className="font-bold border-[1px]"
@@ -80,8 +80,8 @@ export default function Home() {
           >
             Disconnect
           </button>
-        </div>
-        <br />
+        </div> */}
+        {/* <br />
         <br />
         <div>
           {isLoading ? (
@@ -95,8 +95,8 @@ export default function Home() {
           )}
         </div>
         <br />
-        <br />
-        <Form onSubmit={onSubmit} />
+        <br /> */}
+        {/* <Form onSubmit={onSubmit} /> */}
       </>
     );
   // else if (isConnecting) return <div>Wallet is connecting..</div>;

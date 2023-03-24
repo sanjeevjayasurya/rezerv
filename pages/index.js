@@ -5,10 +5,8 @@ import {
   useDisconnect,
 } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import Form from "../components/form";
 import { useEffect } from "react";
 import { Hero } from "../components/Hero";
-import Balance from "../components/Balance";
 
 export default function Home() {
 

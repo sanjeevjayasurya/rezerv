@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useAccount, useBalance, useSigner, useContract } from "wagmi";
 import { Container } from "../components/Container";
-import Form from "../components/form";
+import Form from "../components/Form";
 import disperseContractABI from "../abi/disperseContractABI.json";
 
 
